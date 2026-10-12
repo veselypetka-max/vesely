@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>English Months – procvičování s hodnocením</title>
+<style>
+:root{--blue:#087ce9;--navy:#0755a8;--green:#28b52d;--yellow:#ffd72e;--pink:#ef4aa5;--red:#ef4037;--ink:#17314d}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;color:var(--ink);background:linear-gradient(#b9ecff 0 145px,#f7fbff 145px)}
+header{min-height:145px;display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 18px;position:relative}
+.avatar{font-size:76px;filter:drop-shadow(0 4px 2px #0002)}h1{margin:0;font-size:clamp(34px,6vw,64px);color:#fff;text-shadow:0 4px 0 var(--navy)}h1 span{color:#ffe324;text-shadow:0 4px 0 #d59e00}
+.subtitle{text-align:center;font-weight:800;color:#0755a8;font-size:19px}.topscore{position:absolute;right:15px;top:10px;background:#ffffffdf;border-radius:18px;padding:10px 14px;box-shadow:0 5px 15px #0002;font-weight:900;line-height:1.5}
+nav{display:flex;gap:4px;overflow-x:auto;padding:0 8px;background:var(--blue);border-bottom:5px solid var(--navy)}
+nav button{white-space:nowrap;border:1px solid #9ed4ff;border-radius:14px 14px 0 0;padding:12px 14px;background:#168bf1;color:#fff;font-weight:900;cursor:pointer}nav button:hover{background:var(--yellow);color:var(--ink)}
+main{max-width:1180px;margin:18px auto;padding:0 14px 40px}.panel{display:none}.panel.active{display:block}.box{background:#fff;border-radius:20px;padding:20px;box-shadow:0 8px 25px #0a5c9d1c;margin-bottom:15px}
+h2{margin-top:0;color:#d7197c}.rule{background:#fff8c9;border-left:7px solid #72b62f;padding:15px;border-radius:12px;margin:12px 0}.center{text-align:center}.bigword{font-size:25px;font-weight:900}
+.monthgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.monthcard{padding:15px;border:2px solid #dce9f4;border-radius:14px;text-align:center;background:#fff}.monthcard b{font-family:Georgia,serif;font-size:25px}.monthcard:nth-child(odd) b{color:#54a63b}.monthcard:nth-child(even) b{color:#416fa8}
+button.action,.choices button{border:0;border-radius:12px;padding:12px 17px;background:var(--green);color:#fff;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 #16851a}.listen{background:var(--blue)!important;box-shadow:0 3px 0 var(--navy)!important}.next{background:var(--blue)!important;margin:8px}
+.question{font-size:clamp(34px,7vw,58px);font-weight:900;color:#0767c7;margin:15px}.counter{display:inline-block;background:#f2f4f7;border-radius:20px;padding:7px 14px;font-weight:900}
+input{width:min(100%,580px);padding:14px 16px;border:3px solid #c8d6e2;border-radius:12px;font-size:21px;margin:14px;text-align:center}.feedback{max-width:800px;margin:14px auto;padding:14px;border-radius:14px;min-height:54px;font-size:19px;font-weight:900}.good{background:#eafbe9;border:2px solid #78d674;color:#16851a}.wrong{background:#fff0ef;border:2px solid #ff9994;color:#d72c24}.correctAnswer{display:block;color:#0755a8;margin-top:7px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:800px;margin:16px auto}.scorecards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:800px;margin:18px auto}.stat{padding:14px;border-radius:14px;background:#eef7ff;font-weight:900;font-size:18px}.progress{height:18px;background:#e0e6eb;border-radius:20px;overflow:hidden;max-width:800px;margin:10px auto}.bar{height:100%;background:#27b733;transition:.3s}
+.result{display:none;background:linear-gradient(135deg,#fff3b5,#ffe6f5);border:3px solid #ffb52b;border-radius:22px;padding:22px;max-width:780px;margin:20px auto;text-align:center}.result .avatar{font-size:100px}.result h2{font-size:36px;color:#ef7c00;margin:5px}.stars{font-size:34px}
+.matchrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:820px;margin:10px auto}.matchrow select{padding:12px;border-radius:10px;border:2px solid #b9ccdc;font-size:17px}.order{max-width:650px;margin:auto;display:grid;gap:8px}.orderitem{display:flex;align-items:center;gap:8px;padding:10px 13px;background:#fff;border:2px solid #dbe5ee;border-radius:12px;font-size:19px;font-weight:800}.orderitem span{flex:1}.orderitem button{padding:6px 9px}.home{text-align:center;padding:20px}.home .avatar{font-size:120px}
+@media(max-width:700px){header{flex-wrap:wrap}.topscore{position:static}.avatar{font-size:55px}.scorecards,.choices,.matchrow{grid-template-columns:1fr}h1{text-align:center}}
+</style></head><body>
+<header><div class="avatar">🧑‍🎓</div><div><h1>English <span>Months</span></h1><div class="subtitle">12 měsíců • výslovnost • psaní • přiřazování • pořadí • body</div></div>
+<div class="topscore">⭐ Správně: <span id="topGood">0</span><br>❌ Chybně: <span id="topBad">0</span><br>🏆 Body: <span id="topPoints">0</span></div></header>
+<nav><button onclick="show('home')">🏠 Domů</button><button onclick="show('learn')">1. Výslovnost</button><button onclick="show('write');startWrite()">2. Psaní</button><button onclick="show('quiz');startQuiz()">3. Kvíz</button><button onclick="show('match');newMatch()">4. Přiřazování</button><button onclick="show('order');newOrder()">5. Pořadí</button><button onclick="show('test');startTest()">🏆 Závěrečný test</button></nav>
+<main>
+<section id="home" class="panel active"><div class="box home"><div class="avatar">🧑‍🎓✨</div><h2>Vítej v procvičování měsíců!</h2><p class="bigword">January • February • March • … • December</p><div class="rule">Za každou správnou odpověď získáš <b>+1 bod ⭐</b>. Chybné odpovědi se počítají a vždy se zobrazí správné řešení.</div><button class="action" onclick="show('learn')">Začít →</button></div></section>
+
+<section id="learn" class="panel"><div class="box"><h2>1. 🔊 Listen and repeat</h2><p>Klikni na měsíc, poslechni si výslovnost a zopakuj ho.</p><div id="monthGrid" class="monthgrid"></div></div></section>
+
+<section id="write" class="panel"><div class="box center"><h2>2. ✍️ Napiš měsíc anglicky</h2><span id="wCounter" class="counter"></span><div id="wQ" class="question"></div><button class="action listen" onclick="speak(current.en)">🔊 Poslechnout</button><input id="wInput" placeholder="Napiš anglický měsíc…" onkeydown="if(event.key==='Enter')checkWrite()"><br><button id="wCheck" class="action" onclick="checkWrite()">Zkontrolovat</button><div id="wFeedback"></div><div id="wStats"></div><button id="wNext" class="action next" style="display:none" onclick="nextWrite()">Další →</button><div id="wResult" class="result"></div></div></section>
+
+<section id="quiz" class="panel"><div class="box center"><h2>3. 🎯 Vyber správný měsíc</h2><span id="qCounter" class="counter"></span><div id="qQ" class="question"></div><div id="qChoices" class="choices"></div><div id="qFeedback"></div><div id="qStats"></div><button id="qNext" class="action next" style="display:none" onclick="nextQuiz()">Další →</button><div id="qResult" class="result"></div></div></section>
+
+<section id="match" class="panel"><div class="box center"><h2>4. 🔗 Přiřazování</h2><p>Přiřaď český měsíc ke správnému anglickému názvu.</p><div id="matchRows"></div><button class="action" onclick="checkMatch()">Zkontrolovat</button><button class="action next" onclick="newMatch()">Nové zadání</button><div id="mFeedback"></div></div></section>
+
+<section id="order" class="panel"><div class="box center"><h2>5. ↕️ Seřaď měsíce</h2><p>Pomocí šipek seřaď měsíce od January do December.</p><div id="orderList" class="order"></div><br><button class="action" onclick="checkOrder()">Zkontrolovat pořadí</button><button class="action next" onclick="newOrder()">Zamíchat</button><div id="oFeedback"></div></div></section>
+
+<section id="test" class="panel"><div class="box center"><h2>🏆 Závěrečný test – 10 otázek</h2><span id="tCounter" class="counter"></span><div id="tQ" class="question"></div><input id="tInput" placeholder="Napiš anglický měsíc…" onkeydown="if(event.key==='Enter')checkTest()"><br><button id="tCheck" class="action" onclick="checkTest()">Zkontrolovat</button><div id="tFeedback"></div><div id="tStats"></div><button id="tNext" class="action next" style="display:none" onclick="nextTest()">Další →</button><div id="tResult" class="result"></div></div></section>
+</main>
+<script>
+const months=[
+{en:'January',cz:'leden'},{en:'February',cz:'únor'},{en:'March',cz:'březen'},{en:'April',cz:'duben'},
+{en:'May',cz:'květen'},{en:'June',cz:'červen'},{en:'July',cz:'červenec'},{en:'August',cz:'srpen'},
+{en:'September',cz:'září'},{en:'October',cz:'říjen'},{en:'November',cz:'listopad'},{en:'December',cz:'prosinec'}];
+let current=months[0],globalGood=0,globalBad=0,points=0;
+function show(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function speak(t){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.8;speechSynthesis.speak(u)}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}function norm(s){return s.trim().toLowerCase()}
+function score(ok){if(ok){globalGood++;points++}else globalBad++;topGood.textContent=globalGood;topBad.textContent=globalBad;topPoints.textContent=points}
+function stats(el,g,b,total){let done=g+b,p=done?Math.round(g/done*100):0;el.innerHTML=`<div class="scorecards"><div class="stat">⭐ Správně<br>${g}</div><div class="stat">❌ Chybně<br>${b}</div><div class="stat">🏆 Body<br>${g}</div><div class="stat">Úspěšnost<br>${p}%</div></div><div class="progress"><div class="bar" style="width:${done/total*100}%"></div></div>`}
+function result(el,g,b,restart){let n=g+b,p=Math.round(g/n*100),msg=p>=90?'Vynikající!':p>=70?'Výborně!':p>=50?'Dobrá práce!':'Procvičuj dál!';el.style.display='block';el.innerHTML=`<div class="avatar">🧑‍🎓👍</div><div class="stars">${p>=80?'⭐⭐⭐':p>=50?'⭐⭐':'⭐'}</div><h2>${msg}</h2><p class="bigword">${g} / ${n} správně (${p} %)</p><p>⭐ Správně: ${g} &nbsp; ❌ Chybně: ${b} &nbsp; 🏆 Získané body: ${g}</p><button class="action" onclick="${restart}">🔄 Zkusit znovu</button>`}
+monthGrid.innerHTML=months.map((x,i)=>`<div class="monthcard"><small>${i+1}. měsíc</small><br><b>${x.en}</b><p>${x.cz}</p><button class="action listen" onclick="speak('${x.en}')">🔊 Poslechnout</button></div>`).join('');
+
+// writing
+let wi=0,wg=0,wb=0,wset=[];
+function startWrite(){wi=wg=wb=0;wset=shuffle(months).slice(0,10);wResult.style.display='none';loadWrite()}
+function loadWrite(){current=wset[wi];wCounter.textContent=`${wi+1} / 10`;wQ.textContent=current.cz;wInput.value='';wInput.disabled=false;wCheck.style.display='inline-block';wNext.style.display='none';wFeedback.innerHTML='';stats(wStats,wg,wb,10);setTimeout(()=>wInput.focus(),50)}
+function checkWrite(){if(wInput.disabled)return;let ok=norm(wInput.value)===norm(current.en);score(ok);ok?wg++:wb++;wFeedback.className='feedback '+(ok?'good':'wrong');wFeedback.innerHTML=ok?'✅ Správně! +1 bod ⭐':`❌ Nesprávně.<span class="correctAnswer">Správné řešení: <b>${current.en}</b></span>`;speak(current.en);wInput.disabled=true;wCheck.style.display='none';wNext.style.display='inline-block';stats(wStats,wg,wb,10)}
+function nextWrite(){wi++;if(wi>=10){wNext.style.display='none';result(wResult,wg,wb,'startWrite()')}else loadWrite()}
+
+// quiz
+let qi=0,qg=0,qb=0,qset=[],qLocked=false;
+function startQuiz(){qi=qg=qb=0;qset=shuffle(months).slice(0,10);qResult.style.display='none';loadQuiz()}
+function loadQuiz(){qLocked=false;current=qset[qi];qCounter.textContent=`${qi+1} / 10`;qQ.textContent=current.cz;qFeedback.innerHTML='';qNext.style.display='none';let c=shuffle([current,...shuffle(months.filter(x=>x.en!==current.en)).slice(0,3)]);qChoices.innerHTML=c.map(x=>`<button onclick="checkQuiz('${x.en}')">${x.en}</button>`).join('');stats(qStats,qg,qb,10)}
+function checkQuiz(a){if(qLocked)return;qLocked=true;let ok=a===current.en;score(ok);ok?qg++:qb++;qFeedback.className='feedback '+(ok?'good':'wrong');qFeedback.innerHTML=ok?'✅ Správně! +1 bod ⭐':`❌ Nesprávně.<span class="correctAnswer">Správné řešení: <b>${current.en}</b></span>`;speak(current.en);qNext.style.display='inline-block';stats(qStats,qg,qb,10)}
+function nextQuiz(){qi++;if(qi>=10){qChoices.innerHTML='';qNext.style.display='none';result(qResult,qg,qb,'startQuiz()')}else loadQuiz()}
+
+// matching
+let mset=[],mChecked=false;
+function newMatch(){mChecked=false;mset=shuffle(months).slice(0,6);let opts=shuffle(mset);matchRows.innerHTML=mset.map((x,i)=>`<div class="matchrow"><div class="monthcard"><b>${x.cz}</b></div><select id="ms${i}"><option value="">— vyber —</option>${opts.map(o=>`<option value="${o.en}">${o.en}</option>`).join('')}</select></div>`).join('');mFeedback.innerHTML=''}
+function checkMatch(){if(mChecked)return;mChecked=true;let g=0,b=0,w=[];mset.forEach((x,i)=>{let ok=document.getElementById('ms'+i).value===x.en;score(ok);ok?g++:(b++,w.push(`${x.cz} → ${x.en}`));document.getElementById('ms'+i).disabled=true});mFeedback.className='feedback '+(b?'wrong':'good');mFeedback.innerHTML=b?`⭐ Správně: ${g}/6, získané body: ${g}.<span class="correctAnswer">Oprava: ${w.join(' • ')}</span>`:`✅ Všech 6 správně! +6 bodů ⭐ 🧑‍🎓✨`}
+
+// order - awards one point per correctly positioned month, once per round
+let order=[],orderChecked=false;
+function newOrder(){order=shuffle(months);orderChecked=false;renderOrder();oFeedback.innerHTML=''}
+function renderOrder(){orderList.innerHTML=order.map((x,i)=>`<div class="orderitem"><span>${i+1}. ${x.en}</span><button class="action listen" onclick="move(${i},-1)">▲</button><button class="action listen" onclick="move(${i},1)">▼</button><button class="action" onclick="speak('${x.en}')">🔊</button></div>`).join('')}
+function move(i,d){if(orderChecked)return;let j=i+d;if(j<0||j>=order.length)return;[order[i],order[j]]=[order[j],order[i]];renderOrder()}
+function checkOrder(){if(orderChecked)return;orderChecked=true;let g=0,b=0;order.forEach((x,i)=>{let ok=x.en===months[i].en;score(ok);ok?g++:b++});oFeedback.className='feedback '+(b?'wrong':'good');oFeedback.innerHTML=b?`Správně umístěno: <b>${g}/12</b>. Získané body: <b>${g}</b>.<span class="correctAnswer">Správné pořadí: ${months.map(x=>x.en).join(' → ')}</span>`:`🎉 Perfektní pořadí! +12 bodů ⭐ 🧑‍🎓✨`}
+
+// final test
+let ti=0,tg=0,tb=0,tset=[];
+function startTest(){ti=tg=tb=0;tset=shuffle(months).slice(0,10);tResult.style.display='none';loadTest()}
+function loadTest(){current=tset[ti];tCounter.textContent=`${ti+1} / 10`;tQ.textContent=current.cz;tInput.value='';tInput.disabled=false;tCheck.style.display='inline-block';tNext.style.display='none';tFeedback.innerHTML='';stats(tStats,tg,tb,10)}
+function checkTest(){if(tInput.disabled)return;let ok=norm(tInput.value)===norm(current.en);score(ok);ok?tg++:tb++;tFeedback.className='feedback '+(ok?'good':'wrong');tFeedback.innerHTML=ok?'✅ Správně! +1 bod ⭐':`❌ Chyba.<span class="correctAnswer">Správně je: <b>${current.en}</b></span>`;speak(current.en);tInput.disabled=true;tCheck.style.display='none';tNext.style.display='inline-block';stats(tStats,tg,tb,10)}
+function nextTest(){ti++;if(ti>=10){tNext.style.display='none';result(tResult,tg,tb,'startTest()')}else loadTest()}
+newMatch();newOrder();
+</script></body></html>
